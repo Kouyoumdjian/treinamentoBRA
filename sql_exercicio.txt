@@ -1,0 +1,172 @@
+CREATE DATABASE bradesco;
+
+USE bradesco;
+
+CREATE TABLE clientes (
+	
+	codcliente INT PRIMARY KEY,
+	nome VARCHAR(50) NOT null
+
+); 
+
+ SELECT * FROM clientes;
+
+CREATE TABLE vendedores(
+
+	codvendedor INT PRIMARY KEY,
+	nome VARCHAR(50) NOT null
+
+);
+
+CREATE TABLE vendas(
+
+	codvendas INT PRIMARY KEY,
+	datavenda DATE NOT NULL,
+	
+	codcliente INT,
+	codvendedor int
+
+);
+
+ALTER TABLE vendas ADD CONSTRAINT fk_vendas_codcliente FOREIGN KEY (codcliente) REFERENCES clientes (codcliente);
+
+ALTER TABLE vendas ADD CONSTRAINT fk_vendas_codvendedor FOREIGN KEY (codvendedor) REFERENCES vendedores (codvendedor);
+
+
+#exercicio
+INSERT INTO clientes VALUES (1, 'Gaby');
+INSERT INTO clientes VALUES (2, 'Rafael');
+INSERT INTO clientes VALUES (3, 'Amanda');
+INSERT INTO clientes VALUES (4, 'Henrique');
+INSERT INTO clientes VALUES (5, 'Joao');
+INSERT INTO clientes VALUES (6, 'Guilherme');
+INSERT INTO clientes VALUES (7, 'Thiago');
+INSERT INTO clientes VALUES (8, 'Luana');
+INSERT INTO clientes VALUES (9, 'Isabela');
+INSERT INTO clientes VALUES (10, 'Leticia');
+
+
+
+#SELECT * FROM clientes
+
+
+INSERT INTO vendedores VALUES (1, 'Gaby');
+INSERT INTO vendedores VALUES (2, 'Rafael');
+INSERT INTO vendedores VALUES (3, 'Amanda');
+INSERT INTO vendedores VALUES (4, 'Henrique');
+INSERT INTO vendedores VALUES (5, 'Joao');
+INSERT INTO vendedores VALUES (6, 'Guilherme');
+INSERT INTO vendedores VALUES (7, 'Thiago');
+INSERT INTO vendedores VALUES (8, 'Luana');
+INSERT INTO vendedores VALUES (9, 'Isabela');
+INSERT INTO vendedores VALUES (10, 'Leticia');
+
+
+
+#SELECT * FROM vendedores
+
+INSERT INTO vendas VALUES (10, "2023-04-27", 1, 1);
+INSERT INTO vendas VALUES (1, "2023-04-27", 10, 10);
+INSERT INTO vendas VALUES (2, "2023-04-27", 2, 2);
+INSERT INTO vendas VALUES (3, "2023-04-27", 3, 3);
+INSERT INTO vendas VALUES (4, "2023-04-27", 4, 4);
+INSERT INTO vendas VALUES (5, "2023-04-27", 5, 5);
+INSERT INTO vendas VALUES (6, "2023-04-27", 6, 6);
+INSERT INTO vendas VALUES (7, "2023-04-27", 7, 7);
+INSERT INTO vendas VALUES (8, "2023-04-27", 8, 8);
+INSERT INTO vendas VALUES (9, "2023-04-27", 9, 9);
+
+
+
+
+
+#SELECT * FROM vendas
+
+#fim exercicio
+
+
+ALTER TABLE vendas CHANGE codvendas cod_vendas INT;
+ALTER TABLE vendas ADD NOME_VENDA VARCHAR(255);
+ALTER TABLE vendas MODIFY COLUMN NOME_VENDA DATE;
+ALTER TABLE vendas DROP COLUMN NOME_VENDA;
+
+
+#exercicio
+ALTER TABLE vendas ADD exercicio VARCHAR(255);
+ALTER TABLE vendas MODIFY COLUMN exercicio VARCHAR(100);
+ALTER TABLE vendas CHANGE datavenda data_venda date;
+ALTER TABLE vendas DROP COLUMN exercicio;
+
+
+#SELECT * FROM vendas
+
+#fim exercicio
+
+
+
+UPDATE vendedores SET nome = "GABY BRADESCO" WHERE codvendedor = 1
+
+#SELECT * FROM vendedores
+
+
+#exercicio - update nos 5 primeiros nomes da tabela cliente e vendedores botando sobrenome
+UPDATE clientes SET nome = "amauri bra" WHERE codcliente = 1;
+UPDATE clientes SET nome = "rafael bra" WHERE codcliente = 2;
+UPDATE clientes SET nome = "amanda linda perfeita" WHERE codcliente = 3;
+UPDATE clientes SET nome = "henrique bra" WHERE codcliente = 4;
+UPDATE clientes SET nome = "bradesco bra" WHERE codcliente = 5;
+
+SELECT * FROM vendedores
+SELECT * FROM clientes
+
+#fim exercicio
+
+
+
+#SELECT * FROM clientes
+#SELECT * FROM vendedores
+
+SELECT * FROM vendas vd 
+    right JOIN vendedores vs 
+    ON vd.codvendedor = vs.codvendedor;
+    
+    
+    
+
+   
+SELECT cs.codcliente, COUNT(vs.data_venda) AS qte FROM vendas vs
+    LEFT JOIN clientes cs
+        on    vs.codcliente = cs.codcliente
+    GROUP BY cs.codcliente
+    ORDER BY qte ASC
+    LIMIT 10
+    
+*/  
+
+#exercicios
+
+SELECT * FROM vendas vd 
+    inner JOIN clientes cs 
+    ON vd.codcliente = cs.codcliente;
+   
+SELECT * FROM vendas vd 
+    inner JOIN vendedores vs 
+    ON vd.codvendedor = vs.codvendedor;
+  
+SELECT * FROM vendas vd 
+    right JOIN vendedores vs 
+    ON vd.codvendedor = vs.codvendedor;
+
+SELECT * FROM vendas vd 
+    inner JOIN clientes cs 
+    ON vd.codcliente = cs.codcliente
+    LEFT JOIN vendedores vs
+    ON vd.codvendedor = vs.codvendedor;   
+SELECT vd.data_venda FROM vendas vd 
+    left JOIN clientes cs 
+    ON vd.codcliente = cs.codcliente
+    right JOIN vendedores vs
+    ON vd.codvendedor = vs.codvendedor
+	GROUP BY vd.data_venda
+	ORDER BY vd.data_venda DESC
+	LIMIT 1;
